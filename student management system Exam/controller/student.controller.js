@@ -71,11 +71,15 @@ const updateManually = async (req, res, next) => {
 
     console.log("updates", updates);
 
-    const allowedFields = ["name","gr_id"];
+    const allowedFields = ["name", "gr_id", "course"];
 
     const isValidUpdate = updates.every((u) => allowedFields.includes(u));
 
     console.log("is valid update", isValidUpdate);
+
+    if (updates.length === 0) {
+      return next(new HttpError("at least one field is required to update", 400));
+    }
 
     if (!isValidUpdate) {
       return next(new HttpError("only allowed field can be update", 400));
